@@ -10,6 +10,7 @@
 //Including the NeoPixel Library
 #include "Adafruit_NeoPixel.h"
 
+
 //Defining Hardware Variables
 const byte LED_COUNT             = 3;
 const byte LED_SPI_MODULE        = 3;//PF_1
@@ -48,22 +49,22 @@ void loop()
   NeoPixel.setPixelColor(2, 0, 0, 255); //Sets pixel 3 to Blue
    */
 
-   /*
+
    //sets all LEDs to Red
    for(uint8_t i = 0; i<NeoPixel.numPixels(); i++)
    {
     NeoPixel.setPixelColor(i, 255, 0, 0);
    }
-   */
+   
 
    //Ramps LED
-  /*
+  
    count ++;
    if(count > 2550) count = 0;
    NeoPixel.setPixelColor(0, count/10, 0, 0);
    NeoPixel.setPixelColor(1,0,count/10,0);
    NeoPixel.setPixelColor(2,0,0,count/10);
-  */
+ 
   /*
   int fghj=1;
 count ++;
@@ -82,7 +83,7 @@ NeoPixel.setPixelColor(0, count*10, 0, 0);
 //Adafruit_NeoPixel   NeoPixel(LED_COUNT, LED_SPI_MODULE, NEOPIXEL_TYPE)
    //Sine Wave LED
    
-   count ++;
+/*   count ++;
    if(count > 2550) count = 0;
    NeoPixel.setPixelColor(1, 0, NeoPixel.sine8(count/10), 0);
 
