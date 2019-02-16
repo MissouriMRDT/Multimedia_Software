@@ -14,11 +14,20 @@
 void setup()
 {
   Serial.begin(9600);
-  //RoveComm.begin(RC_LIGHTINGSHIMBLEBOARD_FOURTHOCTET); //sets the fourth octet of the ip address for networking with the Rover network
-  //delay  (ROVECOMM_DELAY);                      // sets 10ms delay so code doesnt trip over itself
+  RoveComm.begin(RC_LIGHTINGSHIMBLEBOARD_FOURTHOCTET); //sets the fourth octet of the ip address for networking with the Rover network
+  delay(ROVECOMM_DELAY);                      // sets 10ms delay so code doesnt trip over itself
 
   pinMode(HEADLIGHT1_PIN, OUTPUT);
-  //pinMode(HEADLIGHT2_PIN, OUTPUT);
+  pinMode(HEADLIGHT2_PIN, OUTPUT);
+
+
+  analogWrite(HEADLIGHT1_PIN, 0);
+  analogWrite(HEADLIGHT2_PIN, 0);
+
+   NeoPixel.begin();
+   delay(10);
+   NeoPixel.setBrightness(255);
+   
   Serial.println("Setup Complete.");
 }
 
@@ -26,8 +35,13 @@ void setup()
 void loop() 
 {
 
-  delay(100);
-  analogWrite(HEADLIGHT1_PIN, 0);
-  analogWrite(HEADLIGHT2_PIN, 100);
-  
+  delay(10);
+
+  analogWrite(HEADLIGHT1_PIN, 127);
+  analogWrite(HEADLIGHT2_PIN, 127);
+
+   for(count; count<NeoPixel.numPixels(); count++)
+   {
+    NeoPixel.setPixelColor(1, 255, 0, 0);
+   }
 }
