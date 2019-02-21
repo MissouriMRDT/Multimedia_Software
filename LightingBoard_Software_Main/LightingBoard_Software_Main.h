@@ -14,7 +14,7 @@
 #include "RoveComm.h"
 #include "Adafruit_NeoPixel.h"
 
-RoveCommEthernetUdp RoveComm; // extantiates a class
+RoveCommEthernetUdp RoveComm; // extantiates a class (object)
 
 // Pinmap //////////////////////////////////////////////////////////////////////////////
 
