@@ -10,23 +10,25 @@
 
 #include "LightingBoard_Software_Main.h"
 
+//Instantiating NeoPixel Class based on Hardware Variables
+Adafruit_NeoPixel   NeoPixel(LED_COUNT, LED_SPI_MODULE, NEOPIXEL_TYPE);
+
+int count = 0;
 
 void setup()
 {
   Serial.begin(9600);
+  NeoPixel.begin();
   RoveComm.begin(RC_LIGHTINGSHIMBLEBOARD_FOURTHOCTET); //sets the fourth octet of the ip address for networking with the Rover network
   delay(ROVECOMM_DELAY);                      // sets 10ms delay so code doesnt trip over itself
 
   pinMode(HEADLIGHT1_PIN, OUTPUT);
   pinMode(HEADLIGHT2_PIN, OUTPUT);
 
-
   analogWrite(HEADLIGHT1_PIN, 0);
   analogWrite(HEADLIGHT2_PIN, 0);
 
-   NeoPixel.begin();
-   delay(10);
-   NeoPixel.setBrightness(255);
+  NeoPixel.setBrightness(255);
    
   Serial.println("Setup Complete.");
 }
@@ -40,8 +42,8 @@ void loop()
   analogWrite(HEADLIGHT1_PIN, 127);
   analogWrite(HEADLIGHT2_PIN, 127);
 
-   for(count; count<NeoPixel.numPixels(); count++)
+   for(count; count < NeoPixel.numPixels(); count++)
    {
-    NeoPixel.setPixelColor(1, 255, 0, 0);
+    NeoPixel.setPixelColor(count, 255, 0, 0);
    }
 }

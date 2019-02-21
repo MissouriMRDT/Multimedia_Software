@@ -23,14 +23,9 @@ RoveCommEthernetUdp RoveComm; // extantiates a class
 #define NEOPIXEL_PIN      PF_1  ///Dout_NeoPixel 
 
 //  Constants///////////////////////////////////////////////////////////////////////////
-#define ROVECOMM_DELAY    10    // sets delay to 10ms
-
-const byte LED_COUNT             = 3;
-const byte LED_SPI_MODULE        = 3;//PF_1
-const neoPixelType NEOPIXEL_TYPE = NEO_GRB;
-
-//Instantiating NeoPixel Class based on Hardware Variables
-Adafruit_NeoPixel   NeoPixel(LED_COUNT, LED_SPI_MODULE, NEOPIXEL_TYPE);
-
-
-int count = 0;
+	//Delays
+#define ROVECOMM_DELAY    			10    // sets delay to 10ms
+	//NeoPixels
+#define LED_COUNT            		3
+#define LED_SPI_MODULE        		3 //PF_1
+const neoPixelType NEOPIXEL_TYPE 	= NEO_GRB;
