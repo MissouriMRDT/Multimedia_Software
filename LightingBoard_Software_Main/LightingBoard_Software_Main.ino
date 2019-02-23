@@ -13,11 +13,11 @@
 
 //Defining Hardware Variables
 const byte LED_COUNT             = 12;
-const byte LED_SPI_MODULE        = 3;//PF_1
+const byte LED_SPI_MODULE        = 3; //PF_1
 const neoPixelType NEOPIXEL_TYPE = NEO_GRB;
 
 //Define Software Variables
-const int FREQ=1;
+const int FREQ = 1;
 int count = 0, ledNum = 0, waitTime = 20, cursorWidth = 3;
 bool track = 0, ledState=1;
 uint8_t program; 
@@ -51,40 +51,44 @@ void setup()
   
 void loop() 
 {
-  delay(10);
   packet = RoveComm.read(); //reads whats sent from RED
 
   if(packet.data_id != 0)
   {
     Serial.print("Data ID: ");
     Serial.println(packet.data_id);
+
     switch(packet.data_id)
     {
       case RC_LIGHTINGBOARD_SETLEDINTENS_DATAID:
       {
         uint8_t headlight_intensity = map(packet.data[0], 0, 100, 0, 255); //maps headlight intensity to 0-100 since 0-255 is jank apparently
         analogWrite(HEADLIGHT1_PIN, headlight_intensity); //turn the intensity to sent the data
+      	break;
       }
       case RC_LIGHTINGBOARD_SETRGB_DATAID:
       {
-         Serial.print(packet.data[0]);
-          Serial.print(packet.data[1]);
+        Serial.print(packet.data[0]);
+        Serial.print(packet.data[1]);
         Serial.println(packet.data[2]);
-        NeoPixelRGB[RC_LIGHTINGBOARD_SETRGB_REDENTRY]   = packet.data[0];
-        NeoPixelRGB[RC_LIGHTINGBOARD_SETRGB_GREENENTRY] = packet.data[1];
-        NeoPixelRGB[RC_LIGHTINGBOARD_SETRGB_BLUEENTRY]  = packet.data[2];
+        //NeoPixelRGB[RC_LIGHTINGBOARD_SETRGB_REDENTRY]   = packet.data[0];
+        //NeoPixelRGB[RC_LIGHTINGBOARD_SETRGB_GREENENTRY] = packet.data[1];
+        //NeoPixelRGB[RC_LIGHTINGBOARD_SETRGB_BLUEENTRY]  = packet.data[2];
       }
       case RC_LIGHTINGBOARD_LEDCMND_DATAID:
       {
-        //packet.data[0] = program;
+        program = packet.data[0];
+        Serial.println(packet.data[0]);
       }
     }
   }
+
   switch (program)
   {
   
     //Single direction RGB wave
     case 0:
+      Serial.println("YUM");
       count ++;
       NeoPixel.setPixelColor(ledNum , NeoPixel.sine8(count/FREQ), NeoPixel.sine8((count/FREQ)+85), NeoPixel.sine8((count/FREQ)+170));
       if (ledNum<=LED_COUNT)
