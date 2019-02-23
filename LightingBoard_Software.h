@@ -1,14 +1,11 @@
 // Lighting Board Software//////////////////////////////////////////////////////////////
-    // Main Header file
+    // Header file
 //
 // .h file holds constants and function declarations 
 //
 // Created for 2019 Valkyrie by John Beuke, jrbyh6@mst.edu
-////////////////////////////////////////////////////////////////////////////////////////
-// This is the new and better code than the original jank code created by John Beuke
-// This will intergrate headlight control with neopixels control to create "lighting board'
-////2-15-2018////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////
+//
+// Libraries ////////////////////////////////////////////////////////////////////////////
 
 #include <Energia.h> 
 #include "RoveComm.h"
@@ -16,16 +13,22 @@
 
 RoveCommEthernetUdp RoveComm; // extantiates a class (object)
 
-// Pinmap //////////////////////////////////////////////////////////////////////////////
-
+// Constants //////////////////////////////////////////////////////////////////////////////
+	//Pinout
 #define HEADLIGHT1_PIN    PD_0  ///Headlight_OnOff_PWM1
-#define HEADLIGHT2_PIN    PD_1  ///Headlight_OnOff_PWM2
 #define NEOPIXEL_PIN      PF_1  ///Dout_NeoPixel 
 
-//  Constants///////////////////////////////////////////////////////////////////////////
+	//Hardware Variables
+#define LED_COUNT         12
+#define LED_SPI_MODULE    3 //PF_1
+const neoPixelType NEOPIXEL_TYPE = NEO_GRB;
+
+	//Software Variables
+#define FREQ 			  1
+	
 	//Delays
-#define ROVECOMM_DELAY    			10    // sets delay to 10ms
-	//NeoPixels
-#define LED_COUNT            		3
-#define LED_SPI_MODULE        		3 //PF_1
-const neoPixelType NEOPIXEL_TYPE 	= NEO_GRB;
+#define ROVECOMM_DELAY    5
+
+// Function Declarations ////////////////////////////////////////////////////////////////////////////////
+void lightingSetup();
+void lightingLoop();
