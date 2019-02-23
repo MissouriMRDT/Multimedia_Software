@@ -42,8 +42,8 @@ void setup()
   analogWrite(HEADLIGHT1_PIN, 0);
   //analogWrite(HEADLIGHT2_PIN, 0);
 
-  //Makes Sure the LEDs are on
-  NeoPixel.setBrightness(255);
+  //Makes Sure the LEDs are off
+  NeoPixel.setBrightness(0);
    
   Serial.println("Setup Complete.");
 }
@@ -68,17 +68,26 @@ void loop()
       }
       case RC_LIGHTINGBOARD_SETRGB_DATAID:
       {
-        Serial.print(packet.data[0]);
-        Serial.print(packet.data[1]);
-        Serial.println(packet.data[2]);
-        //NeoPixelRGB[RC_LIGHTINGBOARD_SETRGB_REDENTRY]   = packet.data[0];
-        //NeoPixelRGB[RC_LIGHTINGBOARD_SETRGB_GREENENTRY] = packet.data[1];
-        //NeoPixelRGB[RC_LIGHTINGBOARD_SETRGB_BLUEENTRY]  = packet.data[2];
+        //Serial.print(packet.data[0]);
+        //Serial.print(packet.data[1]);
+        //Serial.println(packet.data[2]);
+        NeoPixel.setBrightness(255);
+        count ++;
+      	NeoPixel.setPixelColor(ledNum , packet.data[0], packet.data[1], packet.data[2]);
+      	if (ledNum<=LED_COUNT)
+      	{
+      	  ledNum++;
+      	}
+      	else
+      	{
+      	  ledNum=0;
+      	}
       }
       case RC_LIGHTINGBOARD_LEDCMND_DATAID:
       {
         program = packet.data[0];
         Serial.println(packet.data[0]);
+        Serial.println("Why");
       }
     }
   }
@@ -87,8 +96,9 @@ void loop()
   {
   
     //Single direction RGB wave
-    case 0:
-      Serial.println("YUM");
+    case 1:
+      //Serial.println("YUM");
+      NeoPixel.setBrightness(255);
       count ++;
       NeoPixel.setPixelColor(ledNum , NeoPixel.sine8(count/FREQ), NeoPixel.sine8((count/FREQ)+85), NeoPixel.sine8((count/FREQ)+170));
       if (ledNum<=LED_COUNT)
@@ -103,7 +113,7 @@ void loop()
       break;
     
     //RGB wave bounce
-    case 1:
+    case 2:
       count ++;
       NeoPixel.setPixelColor(ledNum , NeoPixel.sine8(count/FREQ), NeoPixel.sine8((count/FREQ)+85), NeoPixel.sine8((count/FREQ)+170));
       if (track==0)
@@ -134,7 +144,7 @@ void loop()
       break;
     
     //White cursor with red/blue sides
-    case 2:
+    case 3:
       count ++;
       if (track==0)
       {
