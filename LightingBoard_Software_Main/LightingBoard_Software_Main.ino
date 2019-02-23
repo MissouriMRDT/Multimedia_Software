@@ -72,22 +72,27 @@ void loop()
         //Serial.print(packet.data[1]);
         //Serial.println(packet.data[2]);
         NeoPixel.setBrightness(255);
-        count ++;
-      	NeoPixel.setPixelColor(ledNum , packet.data[0], packet.data[1], packet.data[2]);
-      	if (ledNum<=LED_COUNT)
-      	{
-      	  ledNum++;
-      	}
-      	else
-      	{
-      	  ledNum=0;
-      	}
+
+        while(ledNum < LED_COUNT)
+        {
+          count ++;
+      	  NeoPixel.setPixelColor(ledNum , packet.data[0], packet.data[1], packet.data[2]);
+      	  if (ledNum<=LED_COUNT)
+      	  {
+      	    ledNum++;
+      	  }
+      	  else
+      	  {
+      	    ledNum=0;
+      	  }
+        }
+      	break;
       }
       case RC_LIGHTINGBOARD_LEDCMND_DATAID:
       {
         program = packet.data[0];
         Serial.println(packet.data[0]);
-        Serial.println("Why");
+        break;
       }
     }
   }
