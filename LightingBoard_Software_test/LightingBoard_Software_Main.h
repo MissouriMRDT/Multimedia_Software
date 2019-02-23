@@ -19,9 +19,13 @@ RoveCommEthernetUdp RoveComm; // extantiates a class (object)
 // Pinmap //////////////////////////////////////////////////////////////////////////////
 
 #define HEADLIGHT1_PIN    PD_0  ///Headlight_OnOff_PWM1
-//#define HEADLIGHT2_PIN    PD_1  ///Headlight_OnOff_PWM2
+#define HEADLIGHT2_PIN    PD_1  ///Headlight_OnOff_PWM2
 #define NEOPIXEL_PIN      PF_1  ///Dout_NeoPixel 
 
 //  Constants///////////////////////////////////////////////////////////////////////////
 	//Delays
 #define ROVECOMM_DELAY    			5    // sets delay to 5ms
+	//NeoPixels
+#define LED_COUNT            		3
+#define LED_SPI_MODULE        		3 //PF_1
+const neoPixelType NEOPIXEL_TYPE 	= NEO_GRB;
