@@ -6,6 +6,7 @@
 // Libraries //////////////////////////////////////////////////////////////////////////////////////
 
 #include "LightingBoard_Software.h"
+#include "RoveComm.h"
 
 //Define Software Variables
 uint8_t count = 0, ledNum = 0, waitTime = 20, cursorWidth = 3;
@@ -15,8 +16,6 @@ uint8_t program;
 //Instantiating NeoPixel Class based on Hardware Variables
 Adafruit_NeoPixel   NeoPixel(LED_COUNT, LED_SPI_MODULE, NEOPIXEL_TYPE);
 
-struct rovecomm_packet packet; //RoveComm read sends struct
-
 uint8_t NeoPixelRGB[RC_LIGHTINGBOARD_SETRGB_DATACOUNT];
 
 // Setup & Loop Funcitons //////////////////////////////////////////////////////////////////////////////
@@ -25,8 +24,6 @@ void lightingSetup()
 {
   Serial.begin(9600);
   NeoPixel.begin();
-  RoveComm.begin(RC_LIGHTINGSHIMBLEBOARD_FOURTHOCTET); //sets the fourth octet of the ip address for networking with the Rover network
-  delay(ROVECOMM_DELAY);// sets 5ms delay so code doesnt trip over itself
 
   pinMode(HEADLIGHT1_PIN, OUTPUT);
 
@@ -38,10 +35,8 @@ void lightingSetup()
 }
 
   
-void lightingLoop() 
+void lightingLoop(rovecomm_packet packet, RoveCommEthernetUdp * RoveComm) 
 {
-  packet = RoveComm.read(); //reads whats sent from RED
-
   if(packet.data_id != 0)
   {
     Serial.print("Data ID: ");
@@ -60,6 +55,7 @@ void lightingLoop()
         //Serial.print(packet.data[0]);
         //Serial.print(packet.data[1]);
         //Serial.println(packet.data[2]);
+        program = 0;
         NeoPixel.setBrightness(255);
 
         while(ledNum < LED_COUNT)
@@ -91,7 +87,7 @@ void lightingLoop()
   
     //Single direction RGB wave
     case 1:
-      //Serial.println("YUM");
+      Serial.println("YUM");
       NeoPixel.setBrightness(255);
       count ++;
       NeoPixel.setPixelColor(ledNum , NeoPixel.sine8(count/FREQ), NeoPixel.sine8((count/FREQ)+85), NeoPixel.sine8((count/FREQ)+170));
