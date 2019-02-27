@@ -19,7 +19,7 @@
 #define NEOPIXEL_PIN      PF_1  ///Dout_NeoPixel 
 
 	//Hardware Variables
-#define LED_COUNT         104
+#define LED_COUNT         240//104 is number of pixels inside rover //136 is num of pixels on bottom of rover //240 pixels total
 #define LED_SPI_MODULE    3 //PF_1
 const neoPixelType NEOPIXEL_TYPE = NEO_GRB;
 
