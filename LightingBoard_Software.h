@@ -1,5 +1,5 @@
 // Lighting Board Software//////////////////////////////////////////////////////////////
-    // Header file
+	// Header file
 //
 // .h file holds constants and function declarations 
 //
@@ -24,7 +24,7 @@
 const neoPixelType NEOPIXEL_TYPE = NEO_GRB;
 
 	//Software Variables
-#define FREQ 			  1
+#define FREQ 			  0.7
 
 	//Delays
 #define ROVECOMM_DELAY    5

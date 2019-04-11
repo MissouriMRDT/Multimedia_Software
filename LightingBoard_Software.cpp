@@ -88,7 +88,7 @@ void lightingLoop(rovecomm_packet packet, RoveCommEthernetUdp * RoveComm)
     //Single direction RGB wave
     case 1:
       Serial.println("YUM");
-      NeoPixel.setBrightness(80);
+      NeoPixel.setBrightness(70);
       count ++;
       NeoPixel.setPixelColor(ledNum , NeoPixel.sine8(count/FREQ), NeoPixel.sine8((count/FREQ)+85), NeoPixel.sine8((count/FREQ)+170));
       if (ledNum<=LED_COUNT)
