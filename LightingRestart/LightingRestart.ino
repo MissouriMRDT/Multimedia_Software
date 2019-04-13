@@ -4,7 +4,7 @@
 #include "RoveComm.h"
 
 //Define Software Variables
-uint8_t count = 0, ledNum = 0, waitTime = 20, cursorWidth = 3;
+uint8_t count = 0, ledNum = 0, waitTime = 20, cursorWidth = 3, program=0;
 //bool track = 0, ledState=1;
 //uint8_t program; 
 
@@ -32,7 +32,7 @@ void lightingRestartLoop(rovecomm_packet packet, RoveCommEthernetUdp * RoveComm)
   {
     Serial.print("Data ID: ");
     Serial.println(packet.data_id);
-
+  }
     switch(packet.data_id)
     {
       case RC_LIGHTINGBOARD_SETRGB_DATAID:
@@ -55,4 +55,6 @@ void lightingRestartLoop(rovecomm_packet packet, RoveCommEthernetUdp * RoveComm)
         Serial.println("Left For()");
         break;
       }
+    }
+   
 }
