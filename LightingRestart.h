@@ -1,10 +1,3 @@
-// Lighting Board Software//////////////////////////////////////////////////////////////
-	// Header file
-//
-// .h file holds constants and function declarations 
-//
-// Created for 2019 Valkyrie by John Beuke, jrbyh6@mst.edu
-//
 // Libraries ////////////////////////////////////////////////////////////////////////////
 #ifndef _LightingBoard
 #define _LightingBoard
@@ -23,14 +16,11 @@
 #define LED_SPI_MODULE    3 //PF_1
 const neoPixelType NEOPIXEL_TYPE = NEO_GRB;
 
-	//Software Variables
-#define FREQ 			  0.7
-
 	//Delays
 #define ROVECOMM_DELAY    5
 
 // Function Declarations ////////////////////////////////////////////////////////////////////////////////
-void lightingSetup();
-void lightingLoop(rovecomm_packet packet, RoveCommEthernetUdp * RoveComm);
+void lightingRestartSetup();
+void lightingRestartLoop(rovecomm_packet packet, RoveCommEthernetUdp * RoveComm);
 
 #endif

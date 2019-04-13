@@ -52,25 +52,22 @@ void lightingLoop(rovecomm_packet packet, RoveCommEthernetUdp * RoveComm)
       }
       case RC_LIGHTINGBOARD_SETRGB_DATAID:
       {
-        //Serial.print(packet.data[0]);
-        //Serial.print(packet.data[1]);
-        //Serial.println(packet.data[2]);
-        program = 0;
+        NeoPixel.clear(); // Set all pixel colors to 'off'
         NeoPixel.setBrightness(70);
+        program = 0;
 
-        while(ledNum < LED_COUNT)
+        Serial.print(packet.data[0]);
+        Serial.print(packet.data[1]);
+        Serial.println(packet.data[2]);
+
+        for (int i=0; i < LED_COUNT; i++)
         {
-          count ++;
-          NeoPixel.setPixelColor(ledNum, packet.data[0], packet.data[1], packet.data[2]);
-          if (ledNum <=LED_COUNT)
-          {
-            ledNum++;
-          }
-          else
-          {
-            ledNum=0;
-          }
+          Serial.println("Inside For()");
+          NeoPixel.setPixelColor(i, packet.data[0], packet.data[1], packet.data[2]);
+          NeoPixel.show();
+          delay(25);
         }
+        Serial.println("Left For()");
         break;
       }
       case RC_LIGHTINGBOARD_LEDCMND_DATAID:
