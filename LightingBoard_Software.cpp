@@ -9,8 +9,10 @@ uint8_t r = 0;              //previous red value
 uint8_t b = 0;              //previous blue value
 uint8_t g = 0;              //previous green value
 uint8_t workLight = 0;
-uint8_t pattern_num = 0;
+uint8_t headLight = 0;
+uint8_t patternNum = 0;
 uint8_t prevColor = 0;
+
 
 bool track = 0;
 bool ledShow = 0;           //determines whether the chosen command runs the NP.show() function
@@ -28,9 +30,11 @@ void lightingSetup()
   Serial.println("Lighting Setup Complete.");
 
   pinMode(HEADLIGHT_SIGNAL, OUTPUT);
+ 
   pinMode(LED_SPI_MODULE, OUTPUT);
   pinMode(White_Switch, INPUT);
   pinMode(Pattern_Switch, INPUT);
+  pinMode(headlight_Switch, INPUT);
 
   analogWrite(HEADLIGHT_SIGNAL, 0);
 
@@ -75,15 +79,15 @@ void lightingLoop(rovecomm_packet packet, RoveCommEthernetUdp * RoveComm)
     }
   }
 
-  if(packet.data_id != 0)
+  if(packet.data_id != 0)     /////////////////////TELEMETRY
   {
     switch(packet.data_id)
     {
       case RC_LIGHTINGBOARD_SETLEDINTENS_DATAID:
       {
-        if(packet.data[0] >= 20)
+        if(packet.data[0] >= 40)
         {
-          headlight_intensity = 255;
+          headlight_intensity = 100;
         }
         else
         {
@@ -108,7 +112,7 @@ void lightingLoop(rovecomm_packet packet, RoveCommEthernetUdp * RoveComm)
         break;
       }
     }
-  }
+  }///////////////////////////////////////////////////////BUTTONS
   else if(digitalRead(White_Switch))      //work lights
   {
     workLight++;
@@ -119,7 +123,7 @@ void lightingLoop(rovecomm_packet packet, RoveCommEthernetUdp * RoveComm)
   
     if((workLight % 3) == 1)         //Dim setting
     {
-      pattern_num = 0;
+      patternNum = 0;
       r = 100;    //done to prevent going back to previous pattern
       g = 100;
       b = 100;
@@ -127,7 +131,7 @@ void lightingLoop(rovecomm_packet packet, RoveCommEthernetUdp * RoveComm)
     }
     else if((workLight % 3) == 2)    //Full brightness
     {
-      pattern_num = 0;
+      patternNum = 0;
       r = 100;    //done to prevent going back to previous pattern
       g = 100;
       b = 100;
@@ -135,28 +139,31 @@ void lightingLoop(rovecomm_packet packet, RoveCommEthernetUdp * RoveComm)
     }
     else
     {
-      pattern_num = 0;
+      patternNum = 0;
       work_light(0);
     }
   }
    else if(digitalRead(Pattern_Switch))       //patterns
   {
-    pattern_num++;
+    patternNum++;
     r = 0;
     g = 0;
     b = 0;
-    if((pattern_num % 5) == 1)         //solid rover red
+    if((patternNum % 5) == 1)         //solid rover red
     {
       workLight = 0;
       solid(strip.Color(255, 0, 0));
+      r = 255;
+      g = 0;
+      b = 0;
     }
-    else if((pattern_num % 5) == 2)    //rainbow
+    else if((patternNum % 5) == 2)    //rainbow
     {
       workLight = 0;
       rainbow(spectrum);
       previous = 1;
     }
-    else if((pattern_num % 5) == 3)    //bouncy boi
+    else if((patternNum % 5) == 3)    //bouncy boi
     {
       workLight = 0;
       bouncyBoi(strip.Color(255, 0, 0));
@@ -165,7 +172,7 @@ void lightingLoop(rovecomm_packet packet, RoveCommEthernetUdp * RoveComm)
       b = 0;
       previous = 2;
     }
-    else if((pattern_num % 5) == 4)    //Merica
+    else if((patternNum % 5) == 4)    //Merica
     {
       Merica(strip.Color(255, 0, 0));
       r = 255;
@@ -179,11 +186,14 @@ void lightingLoop(rovecomm_packet packet, RoveCommEthernetUdp * RoveComm)
       workLight = 0;
       previous = 0;
     }
-
   }
   else if(digitalRead(headlight_Switch))
   {
-    analogWrite(HEADLIGHT_SIGNAL, 30);
+    if((headLight % 2) == 0)
+      analogWrite(HEADLIGHT_SIGNAL, 20);
+    else  
+      analogWrite(HEADLIGHT_SIGNAL, 0);  
+    headLight++; 
   }
 
   switch (program)
