@@ -233,19 +233,19 @@ static void chase(uint32_t c, uint32_t b, uint32_t a)
 
 void start_up()
 {
-  int speed = (LED_COUNT/2);
+  int speed = (104/2);
   for(int j = 0; j < 1; j++)
   {
-    for(int k = 0; k < LED_COUNT; k++)
+    for(int k = 0; k < 104; k++)
     {
       strip.setPixelColor(k  , 255,0,0); 
       strip.setPixelColor(k-4  , 0,0,0);
       //strip.setPixelColor(LED_COUNT-(3*i), b); // Erase pixel a few steps back
-      strip.setPixelColor(LED_COUNT - k, 255,0,0); 
-      strip.setPixelColor(LED_COUNT - (k-4), 0,0,0);
+      strip.setPixelColor(104 - k, 255,0,0); 
+      strip.setPixelColor(104 - (k-4), 0,0,0);
       strip.show();
 
-      if(k < (LED_COUNT/2))
+      if(k < (104/2))
       {
         speed--;
       }
@@ -257,7 +257,7 @@ void start_up()
     }
   } 
 
-  for(int i = 0; i < LED_COUNT; i++)
+  for(int i = 0; i < 104; i++)
   {
     strip.setPixelColor(i, 0,0,0);
     strip.show();
@@ -269,7 +269,6 @@ void work_light(uint32_t brightness)
   for(uint16_t i=0; i<LED_COUNT; i++) 
   {
     strip.setPixelColor(i  , ((uint32_t)brightness << 16) | ((uint32_t)brightness <<  8) | brightness); 
-    //strip.setPixelColor(LED_COUNT-(3*i), b); // Erase pixel a few steps back 
     strip.show();
   }
 }
@@ -279,8 +278,10 @@ void solid(uint32_t color)
 {
   for(uint16_t i=0; i<LED_COUNT; i++) 
   {
-      strip.setPixelColor(i  , color); 
-      strip.show();  
+    if(digitalRead(digitalRead(Pattern_Switch)))
+      return;  
+    strip.setPixelColor(i  , color); 
+    strip.show();  
   }
 }
 
@@ -289,6 +290,8 @@ void rainbow(uint32_t arr[])
 {
   for(uint16_t i=0; i<LED_COUNT; i++) 
   {
+    if(digitalRead(digitalRead(Pattern_Switch)))
+      return;
     strip.setPixelColor(i  , arr[0]); 
     strip.setPixelColor(i-(LED_COUNT/7), arr[1]); 
     strip.setPixelColor(i-2*(LED_COUNT/7), arr[2]); 
@@ -306,6 +309,8 @@ void bouncyBoi(uint32_t color)
 
  for(uint16_t i=0; i<LED_COUNT+10; i++) 
   {
+    if(digitalRead(digitalRead(Pattern_Switch)))
+      return;
     strip.setPixelColor(i  , color); 
     strip.setPixelColor(i-1*(LED_COUNT/5)  , white); 
     strip.show();  
@@ -313,41 +318,47 @@ void bouncyBoi(uint32_t color)
 
   for(uint16_t j=LED_COUNT; j>0; j--) 
   {
+    if(digitalRead(digitalRead(Pattern_Switch)))
+      return;
     strip.setPixelColor(j  , color); 
     strip.setPixelColor(j+1*(LED_COUNT/5)  , white); 
     strip.show(); 
   }
+ 
 }
 
 void Merica(uint32_t color)
 {
+
   uint32_t white = strip.Color(200,200,200);
   uint32_t red = strip.Color(200,0,0);
   uint32_t blue = strip.Color(0,0,200);
 
-  for(uint16_t i = 0; i < (2*LED_COUNT); i++) 
+  for(uint16_t i = 0; i < (2*104); i++) 
   {
+    if(digitalRead(digitalRead(Pattern_Switch)))
+      return;
     strip.setPixelColor(i  , blue); 
-    strip.setPixelColor(i-((LED_COUNT/40)*2), white); 
-    strip.setPixelColor(i-((LED_COUNT/40)*3), blue); 
-    strip.setPixelColor(i-((LED_COUNT/40)*5), white); 
-    strip.setPixelColor(i-((LED_COUNT/40)*6), blue); 
-    strip.setPixelColor(i-((LED_COUNT/40)*8), white); 
-    strip.setPixelColor(i-((LED_COUNT/40)*9), blue); 
-    strip.setPixelColor(i-((LED_COUNT/40)*11), white); 
-    strip.setPixelColor(i-((LED_COUNT/40)*12), blue); 
-    strip.setPixelColor(i-((LED_COUNT/40)*14), red); 
-    strip.setPixelColor(i-((LED_COUNT/40)*16), white); 
-    strip.setPixelColor(i-((LED_COUNT/40)*18), red); 
-    strip.setPixelColor(i-((LED_COUNT/40)*20), white); 
-    strip.setPixelColor(i-((LED_COUNT/40)*22), red); 
-    strip.setPixelColor(i-((LED_COUNT/40)*24), white); 
-    strip.setPixelColor(i-((LED_COUNT/40)*26), red); 
-    strip.setPixelColor(i-((LED_COUNT/40)*28), white); 
-    strip.setPixelColor(i-((LED_COUNT/40)*30), red); 
-    strip.setPixelColor(i-((LED_COUNT/40)*32), white); 
-    strip.setPixelColor(i-((LED_COUNT/40)*34), red); 
-    strip.setPixelColor(i-((LED_COUNT/40)*36), 0); 
+    strip.setPixelColor(i-((104/40)*2), white); 
+    strip.setPixelColor(i-((104/40)*3), blue); 
+    strip.setPixelColor(i-((104/40)*5), white); 
+    strip.setPixelColor(i-((104/40)*6), blue); 
+    strip.setPixelColor(i-((104/40)*8), white); 
+    strip.setPixelColor(i-((104/40)*9), blue); 
+    strip.setPixelColor(i-((104/40)*11), white); 
+    strip.setPixelColor(i-((104/40)*12), blue); 
+    strip.setPixelColor(i-((104/40)*14), red); 
+    strip.setPixelColor(i-((104/40)*16), white); 
+    strip.setPixelColor(i-((104/40)*18), red); 
+    strip.setPixelColor(i-((104/40)*20), white); 
+    strip.setPixelColor(i-((104/40)*22), red); 
+    strip.setPixelColor(i-((104/40)*24), white); 
+    strip.setPixelColor(i-((104/40)*26), red); 
+    strip.setPixelColor(i-((104/40)*28), white); 
+    strip.setPixelColor(i-((104/40)*30), red); 
+    strip.setPixelColor(i-((104/40)*32), white); 
+    strip.setPixelColor(i-((104/40)*34), red); 
+    strip.setPixelColor(i-((104/40)*36), 0); 
     strip.show();  
     delay(13);
   }

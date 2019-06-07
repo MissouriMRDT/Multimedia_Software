@@ -21,7 +21,7 @@
 #define neoPin				PF_1
 #define headlight_Switch    PM_3
 	//Hardware Variables
-#define LED_COUNT         104//104 is number of pixels inside rover //136 is num of pixels on bottom of rover //240 pixels total
+#define LED_COUNT           360//104//256 is number of pixels inside rover //136 is num of pixels on bottom of rover //240 pixels total
 #define LED_SPI_MODULE    	3//PF_1//43
 //const neoPixelType NEOPIXEL_TYPE = NEO_GRB;
 
