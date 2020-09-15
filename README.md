@@ -1,2 +1,2 @@
 # LightingBoard_Software
-Software forthe Lighting Board
+Software for the Multimedia Board
