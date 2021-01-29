@@ -20,16 +20,13 @@ class LightingMode(Enum):
 pixel_pin = board.D18
  
 # The number of NeoPixels
-num_pixels = 30
- 
-# Order of pixel color
-ORDER = neopixel.RGB
- 
+num_pixels = 256
+
 # Set up our neopixel array
-pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER)
+pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.2, auto_write=False)
 
 # Initialize rovecomm
-rovecomm_node = RoveCommEthernetUdp(11000, ("", 11112))
+rovecomm_node = RoveCommEthernetUdp(11000)
 
 def set_state(state):
     """
@@ -72,7 +69,7 @@ if __name__ == "__main__":
     while True:
         packet = rovecomm_node.read()
 
-        if packet.data_id == 7004:
+        if packet != None and packet.data_id == 7004:
             state = packet.data
             lighting_mode = LightingMode.STATE
 
