@@ -1,82 +1,21 @@
 import time
-import board
-import neopixel
-from rovecomm import RoveCommEthernetUdp, RoveCommPacket
+from rovecomm import RoveComm
 from enum import Enum
-
-class State(Enum):
-    TELEOP = 0
-    AUTONOMY = 1
-    REACHED_GOAL = 2
-    NONE = 3
-
-class LightingMode(Enum):
-    NONE = 0
-    STATE = 1
-    PATTERN = 2
-    RGB = 3
-
-# The PWM pin used to control the NeoPixels
-pixel_pin = board.D18
- 
-# The number of NeoPixels
-num_pixels = 256
-
-# Set up our neopixel array
-pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.2, auto_write=False)
+import lighting
 
 # Initialize rovecomm
-rovecomm_node = RoveCommEthernetUdp(11000)
-
-def set_state(state):
-    """
-    Writes a color to the LED panel to indicate a rover state
-    """
-    if state == State.TELEOP:
-        # Write BLUE to indicate teleop
-        pixels.fill((0, 0, 255))
-        pixels.show()
-        pass
-    elif state == State.AUTONOMY:
-        # Write RED to indicate autonomy
-        pixels.fill((255, 0, 0))
-        pixels.show()
-        pass
-    elif state == State.REACHED_GOAL:
-        # Flash Green to indicate reached goal
-        pixels.fill((0, 255, 0))
-        pixels.show()
-        time.sleep(0.25)
-        pixels.fill((0, 0, 0))
-        pixels.show()
-        pass
-    else:
-        # Default to showing no color
-        pixels.fill((0, 0, 0))
-        pixels.show()
+rovecomm_node = RoveComm(11000, ("", 11112))
 
 if __name__ == "__main__":
     # Default to showing no color
-    pixels.fill((0, 0, 0))
-    pixels.show()
+    lighting.clear_lights()
 
-    # Our default lighting mode
-    lighting_mode = LightingMode.NONE
-
-    # Our default state
-    state = State.NONE
+    # Set up the callbacks
+    rovecomm_node.set_callback(7002, lighting.handle_lighting_commands)
+    rovecomm_node.set_callback(7003, lighting.handle_lighting_commands)
+    rovecomm_node.set_callback(7004, lighting.handle_lighting_commands)
         
     while True:
-        packet = rovecomm_node.read()
-
-        if packet != None and packet.data_id == 7004:
-            state = packet.data
-            lighting_mode = LightingMode.STATE
-
-        if lighting_mode == LightingMode.STATE:
-            set_state(state)
-        elif lighting_mode == LightingMode.PATTERN:
-            pass
-        elif lighting_mode == LightingMode.RGB:
-            pass
+        # Keep light panel running
+        lighting.run_lighting()
     
