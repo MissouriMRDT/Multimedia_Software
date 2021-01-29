@@ -3,6 +3,7 @@ from enum import IntEnum
 import neopixel
 import board
 import time
+from PIL import Image
 
 class State(IntEnum):
     TELEOP = 0
@@ -58,11 +59,27 @@ def handle_lighting_commands(packet):
         this.state = packet.data[0]
         this.lighting_mode = LightingMode.STATE
     elif packet.data_id == 7003:
-        pass
+        this.lighting_mode = LightingMode.PATTERN
     elif packet.data_id == 7002:
         this.rgb = packet.data
         this.lighting_mode = LightingMode.RGB
         print(this.rgb)
+
+def draw_image():
+    print("Image")
+    im = Image.open('face.png')
+    rgb_im = im.convert('RGB')
+    if im.size != (16,16):
+        raise TypeError("Needs to be 16x16 image")
+    for x in range(16):
+        for y in range(16):
+            if x % 2 != 0:
+                y_val = 15 - y
+            else:
+                y_val = y
+            r, g, b = rgb_im.getpixel((x, y))
+            this.pixels[x*16+y_val] = (r,g,b)
+    this.pixels.show()
 
 def display_rgb():
     """
@@ -105,7 +122,7 @@ def run_lighting():
     if this.lighting_mode == LightingMode.STATE:
         display_state()
     elif this.lighting_mode == LightingMode.PATTERN:
-        pass
+        draw_image()
     elif this.lighting_mode == LightingMode.RGB:
         display_rgb()
     else:
