@@ -1,16 +1,16 @@
 import sys
-from enum import Enum
+from enum import IntEnum
 import neopixel
 import board
 import time
 
-class State(Enum):
+class State(IntEnum):
     TELEOP = 0
     AUTONOMY = 1
     REACHED_GOAL = 2
     NONE = 3
 
-class LightingMode(Enum):
+class LightingMode(IntEnum):
     NONE = 0
     STATE = 1
     PATTERN = 2
@@ -25,7 +25,10 @@ this.pixel_pin = board.D18
 this.num_pixels = 256
 
 # Set up our neopixel array
-this.pixels = neopixel.NeoPixel(this.pixel_pin, this.num_pixels, brightness=0.2, auto_write=False)
+this.pixels = neopixel.NeoPixel(this.pixel_pin, this.num_pixels, brightness=0.1, auto_write=False)
+
+# Delay for flashing reached marker
+this.flash_delay = 0.5
 
 # Our default lighting mode
 this.lighting_mode = LightingMode.NONE
@@ -40,7 +43,7 @@ def clear_lights():
     """
     Turns off all the LEDS
     """
-    this.pixels.fill((0, 0, 255))
+    this.pixels.fill((0, 0, 0))
     this.pixels.show()
 
 def handle_lighting_commands(packet):
@@ -52,43 +55,43 @@ def handle_lighting_commands(packet):
         raise TypeError
 
     if packet.data_id == 7004:
-        state = packet.data
-        lighting_mode = LightingMode.STATE
+        this.state = packet.data[0]
+        this.lighting_mode = LightingMode.STATE
     elif packet.data_id == 7003:
         pass
     elif packet.data_id == 7002:
         this.rgb = packet.data
-        lighting_mode = LightingMode.RGB
+        this.lighting_mode = LightingMode.RGB
+        print(this.rgb)
 
-def display_rgb(rgb):
+def display_rgb():
     """
     Fills the pixel matrix with the desired color
     """
-    this.pixels.fill((rgb[0], rgb[1], rgb[2]))
+    print("Displaying rgb")
+    this.pixels.fill((this.rgb[0], this.rgb[1], this.rgb[2]))
     this.pixels.show()
 
-def display_state(state):
+def display_state():
     """
     Writes a color to the LED panel to indicate a rover state
     """
-    if state == State.TELEOP:
+    if this.state == State.TELEOP:
         # Write BLUE to indicate teleop
         this.pixels.fill((0, 0, 255))
         this.pixels.show()
-        pass
-    elif state == State.AUTONOMY:
+    elif this.state == State.AUTONOMY:
         # Write RED to indicate autonomy
         this.pixels.fill((255, 0, 0))
         this.pixels.show()
-        pass
-    elif state == State.REACHED_GOAL:
+    elif this.state == State.REACHED_GOAL:
         # Flash Green to indicate reached goal
         this.pixels.fill((0, 255, 0))
         this.pixels.show()
-        time.sleep(0.25)
+        time.sleep(this.flash_delay)
         this.pixels.fill((0, 0, 0))
         this.pixels.show()
-        pass
+        time.sleep(this.flash_delay)
     else:
         # Default to showing no color
         this.pixels.fill((0, 0, 0))
@@ -100,11 +103,11 @@ def run_lighting():
     """
 
     if this.lighting_mode == LightingMode.STATE:
-        display_state(this.state)
+        display_state()
     elif this.lighting_mode == LightingMode.PATTERN:
-        display_rgb(this.rgb)
-    elif this.lighting_mode == LightingMode.RGB:
         pass
+    elif this.lighting_mode == LightingMode.RGB:
+        display_rgb()
     else:
         clear_lights()
     
