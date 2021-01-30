@@ -43,11 +43,11 @@ this.rgb = (0,0,0)
 this.image_id = None
 
 this.images = {
-    0 : "images/block.png",
-    1 : "images/belgium.png",
-    2 : "images/logo.png",
-    3 : "images/face.png",
-    4 : "images/circle_us.png"
+    0 : "/home/pi/Multimedia_Software/images/block.png",
+    1 : "/home/pi/Multimedia_Software/images/belgium.png",
+    2 : "/home/pi/Multimedia_Software/images/logo.png",
+    3 : "/home/pi/Multimedia_Software/images/face.png",
+    4 : "/home/pi/Multimedia_Software/images/circle_us.png"
 }
 
 def clear_lights():
@@ -99,7 +99,6 @@ def draw_image():
             r, g, b = rgb_im.getpixel((x, y))
             this.pixels[x*16+y_val] = (r,g,b)
     this.pixels.show()
-    rgb_im.save("images/test.png")
     
 def display_rgb():
     """
