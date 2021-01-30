@@ -40,6 +40,16 @@ this.state = State.NONE
 # Our default RGB colors
 this.rgb = (0,0,0)
 
+this.image_id = None
+
+this.images = {
+    0 : "images/block.png",
+    1 : "images/belgium.png",
+    2 : "images/logo.png",
+    3 : "images/face.png",
+    4 : "images/circle_us.png"
+}
+
 def clear_lights():
     """
     Turns off all the LEDS
@@ -59,20 +69,23 @@ def handle_lighting_commands(packet):
         this.state = packet.data[0]
         this.lighting_mode = LightingMode.STATE
     elif packet.data_id == 7003:
+        this.image_id = packet.data[0]
         this.lighting_mode = LightingMode.PATTERN
     elif packet.data_id == 7002:
         this.rgb = packet.data
         this.lighting_mode = LightingMode.RGB
-        print(this.rgb)
 
 def draw_image():
-    print("Image")
-    im = Image.open('face.png')
+    im = Image.open(this.images[this.image_id])
     rgb_im = im.convert('RGB')
+
     if im.size != (16,16):
         raise TypeError("Needs to be 16x16 image")
+
     for x in range(16):
         for y in range(16):
+            # As the array operates in a snake pattern we have to 
+            # switch directions every other row
             if x % 2 != 0:
                 y_val = 15 - y
             else:
