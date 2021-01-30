@@ -4,7 +4,7 @@ from enum import Enum
 import lighting
 
 # Initialize rovecomm
-rovecomm_node = RoveComm(11000, ("", 11112))
+rovecomm_node = RoveComm(11000, ("", 11007))
 
 if __name__ == "__main__":
     # Default to showing no color
