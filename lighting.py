@@ -26,7 +26,7 @@ this.pixel_pin = board.D18
 this.num_pixels = 256
 
 # Set up our neopixel array
-this.pixels = neopixel.NeoPixel(this.pixel_pin, this.num_pixels, brightness=0.1, auto_write=False)
+this.pixels = neopixel.NeoPixel(this.pixel_pin, this.num_pixels, brightness=0.05, auto_write=False)
 
 # Delay for flashing reached marker
 this.flash_delay = 0.5
@@ -43,11 +43,11 @@ this.rgb = (0,0,0)
 this.image_id = None
 
 this.images = {
-    0 : "images/block.png",
-    1 : "images/belgium.png",
-    2 : "images/logo.png",
-    3 : "images/face.png",
-    4 : "images/circle_us.png"
+    0 : "/home/pi/Multimedia_Software/images/block.png",
+    1 : "/home/pi/Multimedia_Software/images/belgium.png",
+    2 : "/home/pi/Multimedia_Software/images/logo.png",
+    3 : "/home/pi/Multimedia_Software/images/face.png",
+    4 : "/home/pi/Multimedia_Software/images/circle_us.png"
 }
 
 def clear_lights():
@@ -77,10 +77,16 @@ def handle_lighting_commands(packet):
 
 def draw_image():
     im = Image.open(this.images[this.image_id])
-    rgb_im = im.convert('RGB')
 
     if im.size != (16,16):
         raise TypeError("Needs to be 16x16 image")
+
+    im.load() # required for png.split()
+    
+    # Create a black image mask, and put non alpha pixels from image ontop
+    # For neopixels, black is functionally "off"
+    rgb_im = Image.new("RGB", im.size, (0, 0, 0))
+    rgb_im.paste(im, mask=im.split()[3]) # 3 is the alpha channel
 
     for x in range(16):
         for y in range(16):
@@ -93,7 +99,7 @@ def draw_image():
             r, g, b = rgb_im.getpixel((x, y))
             this.pixels[x*16+y_val] = (r,g,b)
     this.pixels.show()
-
+    
 def display_rgb():
     """
     Fills the pixel matrix with the desired color
