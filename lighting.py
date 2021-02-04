@@ -32,10 +32,10 @@ this.pixels = neopixel.NeoPixel(this.pixel_pin, this.num_pixels, brightness=0.1,
 this.flash_delay = 0.5
 
 # Our default lighting mode
-this.lighting_mode = LightingMode.NONE
+this.lighting_mode = LightingMode.STATE
 
 # Our default state display
-this.state = State.NONE
+this.state = State.TELEOP
 
 # Our default RGB colors
 this.rgb = (0,0,0)
