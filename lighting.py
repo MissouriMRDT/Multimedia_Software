@@ -65,13 +65,13 @@ def handle_lighting_commands(packet):
     if packet == None:
         raise TypeError
 
-    if packet.data_id == 7004:
+    if packet.data_id == 7003:
         this.state = packet.data[0]
         this.lighting_mode = LightingMode.STATE
-    elif packet.data_id == 7003:
+    elif packet.data_id == 7002:
         this.image_id = packet.data[0]
         this.lighting_mode = LightingMode.PATTERN
-    elif packet.data_id == 7002:
+    elif packet.data_id == 7001:
         this.rgb = packet.data
         this.lighting_mode = LightingMode.RGB
 
