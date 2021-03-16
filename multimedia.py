@@ -1,5 +1,5 @@
 import time
-from rovecomm import RoveComm
+from rovecomm_module.rovecomm import RoveComm
 from enum import Enum
 import lighting
 
