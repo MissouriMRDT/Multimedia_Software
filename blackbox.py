@@ -1,7 +1,7 @@
 import csv
 from datetime import datetime
 import os
-from rovecomm_module.rovecomm import get_manifest
+from rovecomm_module.rovecomm import RoveComm, get_manifest
 
 type_mapping = {
     0: "Commands",
@@ -26,8 +26,12 @@ class BlackBox:
 
         self.manifest = get_manifest()
 
+    def subscribe_all(self, rovecomm_node: RoveComm):
+        # UDP Subscribe to all boards listed in the manifest
+        for board in self.manifest:
+            rovecomm_node.udp_node.subscribe(self.manifest[board]["Ip"])
+
     def log_packets(self, packet):
-        print(packet.data_id)
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         boardName = "N/A"

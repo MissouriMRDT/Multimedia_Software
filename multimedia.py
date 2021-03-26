@@ -10,9 +10,12 @@ rovecomm_node = RoveComm(11000, ("", 11007))
 if __name__ == "__main__":
     # Default to showing no color
     lighting.clear_lights()
-    
+
     # Get rovecomm manifest
     manifest = get_manifest()
+
+    # Subscribe to all available boards
+    black_box.subscribe_all(rovecomm_node)
 
     # Start up blackbox logging to be default rovecomm callback
     rovecomm_node.set_default_callback(black_box.log_packets)
