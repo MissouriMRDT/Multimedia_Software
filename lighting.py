@@ -1,3 +1,4 @@
+from rovecomm_module.rovecomm import get_manifest
 import sys
 from enum import IntEnum
 import neopixel
@@ -42,6 +43,8 @@ this.rgb = (0,0,0)
 
 this.image_id = None
 
+this.manifest = get_manifest()
+
 this.images = {
     0 : "/home/pi/Multimedia_Software/images/block.png",
     1 : "/home/pi/Multimedia_Software/images/belgium.png",
@@ -65,13 +68,13 @@ def handle_lighting_commands(packet):
     if packet == None:
         raise TypeError
 
-    if packet.data_id == 7003:
+    if packet.data_id == this.manifest["Multimedia"]["Commands"]["StateDisplay"]:
         this.state = packet.data[0]
         this.lighting_mode = LightingMode.STATE
-    elif packet.data_id == 7002:
+    elif packet.data_id == this.manifest["Multimedia"]["Commands"]["LEDPatterns"]:
         this.image_id = packet.data[0]
         this.lighting_mode = LightingMode.PATTERN
-    elif packet.data_id == 7001:
+    elif packet.data_id == this.manifest["Multimedia"]["Commands"]["LEDRGB"]:
         this.rgb = packet.data
         this.lighting_mode = LightingMode.RGB
 
