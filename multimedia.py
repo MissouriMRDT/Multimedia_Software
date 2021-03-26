@@ -21,9 +21,9 @@ if __name__ == "__main__":
     rovecomm_node.set_default_callback(black_box.log_packets)
 
     # Set up the callbacks
-    rovecomm_node.set_callback(manifest["Multimedia"]["Commands"]["LEDRGB"], lighting.handle_lighting_commands)
-    rovecomm_node.set_callback(manifest["Multimedia"]["Commands"]["LEDPatterns"], lighting.handle_lighting_commands)
-    rovecomm_node.set_callback(manifest["Multimedia"]["Commands"]["StateDisplay"], lighting.handle_lighting_commands)
+    rovecomm_node.set_callback(manifest["Multimedia"]["Commands"]["LEDRGB"]["dataId"], lighting.handle_lighting_commands)
+    rovecomm_node.set_callback(manifest["Multimedia"]["Commands"]["LEDPatterns"]["dataId"], lighting.handle_lighting_commands)
+    rovecomm_node.set_callback(manifest["Multimedia"]["Commands"]["StateDisplay"]["dataId"], lighting.handle_lighting_commands)
 
     while True:
         # Keep light panel running

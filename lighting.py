@@ -68,13 +68,13 @@ def handle_lighting_commands(packet):
     if packet == None:
         raise TypeError
 
-    if packet.data_id == this.manifest["Multimedia"]["Commands"]["StateDisplay"]:
+    if packet.data_id == this.manifest["Multimedia"]["Commands"]["StateDisplay"]["dataId"]:
         this.state = packet.data[0]
         this.lighting_mode = LightingMode.STATE
-    elif packet.data_id == this.manifest["Multimedia"]["Commands"]["LEDPatterns"]:
+    elif packet.data_id == this.manifest["Multimedia"]["Commands"]["LEDPatterns"]["dataId"]:
         this.image_id = packet.data[0]
         this.lighting_mode = LightingMode.PATTERN
-    elif packet.data_id == this.manifest["Multimedia"]["Commands"]["LEDRGB"]:
+    elif packet.data_id == this.manifest["Multimedia"]["Commands"]["LEDRGB"]["dataId"]:
         this.rgb = packet.data
         this.lighting_mode = LightingMode.RGB
 

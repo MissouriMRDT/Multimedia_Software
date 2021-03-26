@@ -43,10 +43,10 @@ class BlackBox:
 
             # The type of the data id is specified by the 100s place
             # (mapped in type_mapping)
-            type = type_mapping[int(str(packet.data_id)[-3])]
+            idtype = type_mapping[int(str(packet.data_id)[-3])]
 
-            for dataID in self.manifest[board][f"{type}"]:
-                if self.manifest[board][f"{type}"][dataID]["dataId"] == packet.data_id:
+            for dataID in self.manifest[board][f"{idtype}"]:
+                if self.manifest[board][f"{idtype}"][dataID]["dataId"] == packet.data_id:
                     dataIdName = dataID
 
         self.writer.writerow(
