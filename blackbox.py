@@ -41,13 +41,16 @@ class BlackBox:
             if self.manifest[board]["Ip"] == packet.ip_address[0]:
                 boardName = board
 
-            # The type of the data id is specified by the 100s place
-            # (mapped in type_mapping)
-            idtype = type_mapping[int(str(packet.data_id)[-3])]
+                # The type of the data id is specified by the 100s place
+                # (mapped in type_mapping) unless it is a system level packet
+                if len(str(packet.data_id)) >= 3:
+                    idtype = type_mapping[int(str(packet.data_id)[-3])]
+                else:
+                    continue
 
-            for dataID in self.manifest[board][f"{idtype}"]:
-                if self.manifest[board][f"{idtype}"][dataID]["dataId"] == packet.data_id:
-                    dataIdName = dataID
+                for dataID in self.manifest[board][f"{idtype}"]:
+                    if self.manifest[board][f"{idtype}"][dataID]["dataId"] == packet.data_id:
+                        dataIdName = dataID
 
         self.writer.writerow(
             {
