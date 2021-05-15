@@ -142,6 +142,7 @@ def run_lighting():
     """
 
     if this.lighting_mode == LightingMode.STATE:
+        #print("State")
         display_state()
     elif this.lighting_mode == LightingMode.PATTERN:
         draw_image()
